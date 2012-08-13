@@ -1,29 +1,9 @@
-QUICK INSTALL
-=============
+MOODLE@BU
+=================
 
-For the impatient, here is a basic outline of the
-installation process, which normally takes me only
-a few minutes:
+This is a modified fork of the popular, open-source Learning Management System (LMS) Moodle. It is mostly intended for use at Binghamton University, but is provided here in the hopes that other educational insitutions may benefit from our modifications. In an ideal world, many of our modifications will eventually end up in Moodle core code. 
 
-1) Move the Moodle files into your web directory.
+Those who are unfamiliar with Moodle are better off checking out the main Moodle repository, at the following URL:
 
-2) Create a single database for Moodle to store all
-   it's tables in (or choose an existing database).
-
-3) Visit your Moodle site with a browser, you should
-   be taken to the install.php script, which will lead
-   you through creating a config.php file and then
-   setting up Moodle, creating an admin account etc.
-
-4) Set up a cron task to call the file admin/cron.php
-   every five minutes or so.
-
-
-For more information, see the INSTALL DOCUMENTATION:
-
-   http://docs.moodle.org/en/Installing_Moodle
-
-
-Good luck and have fun!
-Martin Dougiamas, Lead Developer
+https://github.com/moodle/moodle
 
