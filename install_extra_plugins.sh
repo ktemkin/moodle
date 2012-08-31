@@ -26,7 +26,7 @@ git clone git://github.com/marxjohnson/moodle-block_messageteacher.git blocks/me
 echo '/blocks/messageteacher' >> .git/info/exclude
 
 # Unanswered Discussions block
-git clone git://github.com/moodlehq/moodle-block_unanswered_discussions.git -b MOODLE_21_STABLE blocks/unanswered_discussions
+git clone git://github.com/bumoodle/moodle-block_unanswered_discussions.git -b $VERSION blocks/unanswered_discussions
 echo '/blocks/unanswered_discussions' >> .git/info/exclude
 
 # "View as Example" block
