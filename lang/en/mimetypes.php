@@ -54,3 +54,7 @@ $string['image'] = 'Image ({$a->MIMETYPE2})';
 $string['text/html'] = 'HTML document';
 $string['text/plain'] = 'Text file';
 $string['text/rtf'] = 'RTF document';
+$string['schematic'] = 'Schematic file';
+$string['schematicsymbol'] = 'Component symbol';
+$string['vhdl'] = 'VHDL Description';
+$string['verilog'] = 'Verilog Description';

@@ -1518,6 +1518,12 @@ function &get_mimetypes_array() {
         'sxg'  => array ('type'=>'application/vnd.sun.xml.writer.global', 'icon'=>'writer'),
         'sxm'  => array ('type'=>'application/vnd.sun.xml.math', 'icon'=>'math'),
 
+        'sch'  => array ('type'=>'application/xml', 'icon'=>'logic', 'string' => 'schematic' ),
+        'sym'  => array ('type'=>'application/xml', 'icon'=>'logic', 'string' => 'schematicsymbol'),
+        'vhd' => array('type'=>'text/plain', 'icon'=>'logic', 'string'=>'vhdl'),
+        'v' => array('type'=>'text/plain', 'icon'=>'logic', 'string'=>'verilog'),
+
+
         'tar'  => array ('type'=>'application/x-tar', 'icon'=>'archive', 'groups'=>array('archive'), 'string'=>'archive'),
         'tif'  => array ('type'=>'image/tiff', 'icon'=>'tiff', 'groups'=>array('image'), 'string'=>'image'),
         'tiff' => array ('type'=>'image/tiff', 'icon'=>'tiff', 'groups'=>array('image'), 'string'=>'image'),
