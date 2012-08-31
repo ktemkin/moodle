@@ -57,6 +57,10 @@ echo '/question/type/boolean' >> .git/info/exclude
 git clone git://github.com/bumoodle/moodle-qtype_scripted.git question/type/scripted
 echo '/question/type/scripted' >> .git/info/exclude
 
+#MathScript (dependency of Scripted)
+git clone git@github.com:bumoodle/MathScript.git question/type/scripted/mathscript
+echo '/mathscript' >> question/type/scripted/.git/info/exclude
+
 #MultiAnswer Cloze Question Type
 git clone git://github.com/bumoodle/moodle-qtype_multianswerbu.git question/type/multianswerbu
 echo '/question/type/multianswerbu' >> .git/info/exclude
