@@ -1,3 +1,5 @@
+#/usr/bin/env bash
+
 #Warn the user before attempting to intall BrainLink plugins.
 echo "This script installs Binghamton-University specific authentication plugins."
 echo "These allow PODS authentication, and are not necessary or applicable for most installations."
