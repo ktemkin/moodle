@@ -20,6 +20,7 @@ standard_plugins=(
                     'question/type/multianswerbu'
                     'question/type/partner'
                     'question/type/scripted'
+                    'question/type/scripted/mathscript'
                     'question/type/scriptedessay'
                     'question/type/usercode' 
                     'question/type/vhdl'
@@ -28,10 +29,8 @@ standard_plugins=(
                     'theme/pdf'
                 )
 
-#this is the version to pull from, on each of the locations
-version_id='master'
-
 #update each of the standard plugins
 for plugin in ${standard_plugins[@]}; do
-    git --git-dir=$plugin/.git pull origin $version_id 
+    echo "Updating $plugin" 
+    git --git-dir=$plugin/.git pull 
 done
