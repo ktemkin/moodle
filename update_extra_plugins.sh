@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+#these are the locations (with respect to the Moodle install root) of each of the standard plugins to be updated
+extra_plugins=(
+  'blocks/ajax_marking'
+  'blocks/configurablereports'
+  'blocks/messageteacher'
+  'blocks/unanswered_discussions'
+  'blocks/viewasexample'
+  'mod/questionnaire'
+)
+
+#update each of the standard plugins
+for plugin in ${extra_plugins[@]}; do
+    git --git-dir=$plugin/.git pull 
+done
