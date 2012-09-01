@@ -33,4 +33,8 @@ echo '/blocks/configurable_reports' >> .git/info/exclude
 git clone git://github.com/moodleou/moodle-block_viewasexample.git blocks/viewasexample
 echo '/blocks/viewasexample' >> .git/info/exclude
 
-
+#
+# "Mass Actions" block
+#
+git clone git://github.com/bumoodle/moodle-block_massaction.git blocks/massaction
+echo '/blocks/massaction' >> .git/info/exclude

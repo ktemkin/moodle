@@ -4,6 +4,7 @@
 extra_plugins=(
   'blocks/ajax_marking'
   'blocks/configurable_reports'
+  'blocks/massaction'
   'blocks/messageteacher'
   'blocks/unanswered_discussions'
   'blocks/viewasexample'
