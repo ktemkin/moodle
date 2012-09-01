@@ -33,5 +33,4 @@ echo '/blocks/configurable_reports' >> .git/info/exclude
 git clone git://github.com/moodleou/moodle-block_viewasexample.git blocks/viewasexample
 echo '/blocks/viewasexample' >> .git/info/exclude
 
-# Clean up exclude, if we're calling this multiple times.
-sort .git/info/exclude | uniq -u
+
