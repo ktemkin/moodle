@@ -25,6 +25,7 @@
  */
 
 require('../config.php');
+require('renderer.php');
 
 redirect_if_major_upgrade_required();
 
@@ -42,6 +43,9 @@ $context = context_system::instance();
 $PAGE->set_url("$CFG->httpswwwroot/login/index.php");
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('login');
+
+// Get this page's renderer.
+$output = $PAGE->get_renderer('core', 'auth');
 
 /// Initialize variables
 $errormsg = '';
@@ -92,6 +96,16 @@ $PAGE->navbar->add($loginsite);
 if ($user !== false or $frm !== false or $errormsg !== '') {
     // some auth plugin already supplied full user, fake form data or prevented user login with error message
 
+    // Try to accept the form-data in as many of the legacy formats as possible:
+    // Accept the form-data as an array...
+    if(is_array($frm)) {
+        $frm = form_data::from_array($frm);
+    }
+    // ... or as a stdClass.
+    else if ($frm instanceof stdClass) {
+        $frm = form_data::from_std_class($frm);
+    }
+
 } else if (!empty($SESSION->wantsurl) && file_exists($CFG->dirroot.'/login/weblinkauth.php')) {
     // Handles the case of another Moodle site linking into a page on this site
     //TODO: move weblink into own auth plugin
@@ -102,11 +116,11 @@ if ($user !== false or $frm !== false or $errormsg !== '') {
     if ($user) {
         $frm->username = $user->username;
     } else {
-        $frm = data_submitted();
+        $frm = login_form::from_submitted_data();
     }
 
 } else {
-    $frm = data_submitted();
+    $frm = login_form::from_submitted_data();
 }
 
 /// Check if the user has actually submitted login data to us
@@ -138,13 +152,13 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
     if (!$user and $frm and is_restored_user($frm->username)) {
         $PAGE->set_title(get_string('restoredaccount'));
         $PAGE->set_heading($site->fullname);
-        echo $OUTPUT->header();
-        echo $OUTPUT->heading(get_string('restoredaccount'));
-        echo $OUTPUT->box(get_string('restoredaccountinfo'), 'generalbox boxaligncenter');
+        echo $output->header();
+        echo $output->heading(get_string('restoredaccount'));
+        echo $output->box(get_string('restoredaccountinfo'), 'generalbox boxaligncenter');
         require_once('restored_password_form.php'); // Use our "supplanter" login_forgot_password_form. MDL-20846
         $form = new login_forgot_password_form('forgot_password.php', array('username' => $frm->username));
         $form->display();
-        echo $OUTPUT->footer();
+        echo $output->footer();
         die;
     }
 
@@ -165,10 +179,10 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
         if (empty($user->confirmed)) {       // This account was never confirmed
             $PAGE->set_title(get_string("mustconfirm"));
             $PAGE->set_heading($site->fullname);
-            echo $OUTPUT->header();
-            echo $OUTPUT->heading(get_string("mustconfirm"));
-            echo $OUTPUT->box(get_string("emailconfirmsent", "", $user->email), "generalbox boxaligncenter");
-            echo $OUTPUT->footer();
+            echo $output->header();
+            echo $output->heading(get_string("mustconfirm"));
+            echo $output->box(get_string("emailconfirmsent", "", $user->email), "generalbox boxaligncenter");
+            echo $output->footer();
             die;
         }
 
@@ -230,14 +244,14 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
             $PAGE->set_title("$site->fullname: $loginsite");
             $PAGE->set_heading("$site->fullname");
             if (intval($days2expire) > 0 && intval($days2expire) < intval($userauth->config->expiration_warning)) {
-                echo $OUTPUT->header();
-                echo $OUTPUT->confirm(get_string('auth_passwordwillexpire', 'auth', $days2expire), $passwordchangeurl, $urltogo);
-                echo $OUTPUT->footer();
+                echo $output->header();
+                echo $output->confirm(get_string('auth_passwordwillexpire', 'auth', $days2expire), $passwordchangeurl, $urltogo);
+                echo $output->footer();
                 exit;
             } elseif (intval($days2expire) < 0 ) {
-                echo $OUTPUT->header();
-                echo $OUTPUT->confirm(get_string('auth_passwordisexpired', 'auth'), $passwordchangeurl, $urltogo);
-                echo $OUTPUT->footer();
+                echo $output->header();
+                echo $output->confirm(get_string('auth_passwordisexpired', 'auth'), $passwordchangeurl, $urltogo);
+                echo $output->footer();
                 exit;
             }
         }
@@ -300,7 +314,7 @@ $PAGE->verify_https_required();
 /// Generate the login page with forms
 
 if (!isset($frm) or !is_object($frm)) {
-    $frm = new stdClass();
+    $frm = new login_form(); 
 }
 
 if (empty($frm->username) && $authsequence[0] != 'shibboleth') {  // See bug 5184
@@ -331,24 +345,30 @@ foreach($authsequence as $authname) {
     $potentialidps = array_merge($potentialidps, $authplugin->loginpage_idp_list($SESSION->wantsurl));
 }
 
+$potential_idp_objects = array();
+foreach($potentialidps as $key => $idp) {
+    $potential_idp_objects[$key] = identity_provider::from_array($idp);
+} 
+
 $PAGE->set_title("$site->fullname: $loginsite");
 $PAGE->set_heading("$site->fullname");
 
-echo $OUTPUT->header();
+echo $output->header();
 
 if (isloggedin() and !isguestuser()) {
     // prevent logging when already logged in, we do not want them to relogin by accident because sesskey would be changed
-    echo $OUTPUT->box_start();
+    echo $output->box_start();
     $logout = new single_button(new moodle_url($CFG->httpswwwroot.'/login/logout.php', array('sesskey'=>sesskey(),'loginpage'=>1)), get_string('logout'), 'post');
     $continue = new single_button(new moodle_url($CFG->httpswwwroot.'/login/index.php', array('cancel'=>1)), get_string('cancel'), 'get');
-    echo $OUTPUT->confirm(get_string('alreadyloggedin', 'error', fullname($USER)), $logout, $continue);
-    echo $OUTPUT->box_end();
+    echo $output->confirm(get_string('alreadyloggedin', 'error', fullname($USER)), $logout, $continue);
+    echo $output->box_end();
 } else {
-    include("index_form.html");
+    //include("index_form.html");
+    echo $output->login_page($frm, $potential_idp_objects);
     if (!empty($CFG->loginpageautofocus)) {
         //focus username or password
         $PAGE->requires->js_init_call('M.util.focus_login_form', null, true);
     }
 }
 
-echo $OUTPUT->footer();
+echo $output->footer();
