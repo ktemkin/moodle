@@ -72,6 +72,22 @@ foreach (get_plugin_list('tinymce') as $component => $ignored) {
 
 $output = 'tinyMCE.addI18n({'.$lang.':'.json_encode($result).'});';
 
+// If PHP's internal gzip output compression is on, we won't be able to correctly
+// determine the value of the content header. Instead, we'll turn it off, and perform
+// the same gzip encoding ourself.
+if(ini_get('zlib.output_compression')) {
+
+    // Turn off PHP's built-in zlib compression...
+    ini_set('zlib.output_compression','Off');
+
+    // And compress the data ourselves. This allow us to correctly set the 
+    // content-length header.
+    $output = gzencode($output,6);
+
+    // Let the recieving browser know that the data will be gzip-compressed.
+    @header('Content-Encoding: gzip');
+}
+
 $lifetime = '10'; // TODO: increase later
 @header('Content-type: text/javascript; charset=utf-8');
 @header('Content-length: '.strlen($output));
