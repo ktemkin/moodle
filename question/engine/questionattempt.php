@@ -533,6 +533,31 @@ class question_attempt {
     }
 
     /**
+     * Returns the value of the QT var in the step most appropriate
+     * for use in user feedback. This is typically the most recently
+     * graded step.
+     * 
+     * @param string $name the name of the variable to get.
+     * @param mixed default the value to return in the variable has never been set.
+     *      (Optional, defaults to null.)
+     * @return mixed string value, or $default if it has never been set.
+    */
+    public function get_feedback_qt_var($name, $default = null) {
+
+        // Get the step which is most appropriate for creating feedback.
+        $step = $this->behaviour->get_feedback_step();
+
+        // If that step has the given QT var, return it; otherwise, return 
+        // the default value provided.
+        if($step->has_qt_var($name)) {
+            return $step->get_qt_var($name);
+        } else {
+            return $default;
+        }
+
+    }
+
+    /**
      * Get the current state of this question attempt. That is, the state of the
      * latest step.
      * @return question_state
