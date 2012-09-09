@@ -41,6 +41,10 @@ echo '/question/behaviour/adaptiveweighted' >> .git/info/exclude
 git clone git://github.com/bumoodle/moodle-qbehavior_adaptiveweightedhints.git question/behaviour/adaptiveweightedhints
 echo '/question/behaviour/adaptiveweightedhints' >> .git/info/exclude
 
+#Save Only ("non-grade")
+git clone git://github.com/bumoodle/moodle-qbehavior_savenongraded.git question/behaviour/savenongraded
+echo '/question/behaviour/savenongraded' >> .git/info/exclude
+
 #
 # Question Types
 #
