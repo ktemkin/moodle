@@ -101,6 +101,8 @@ echo 'mod/bigbluebuttonbn' >> .git/info/exclude
 git clone git://github.com/blindsidenetworks/moodle-mod_recordingsbn.git mod/recordingsbn
 echo 'mod/recordingsbn' >> .git/info/exclude
 
+#Attendance Module
+
 #
 # Quiz Reports
 #
