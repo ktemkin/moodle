@@ -42,7 +42,7 @@ git clone git://github.com/bumoodle/moodle-qbehavior_adaptiveweightedhints.git q
 echo '/question/behaviour/adaptiveweightedhints' >> .git/info/exclude
 
 #Save Only ("non-grade")
-git clone git://github.com/bumoodle/moodle-qbehavior_savenongraded.git question/behaviour/savenongraded
+git clone git://github.com/bumoodle/moodle-qbehaviour_savenongraded.git question/behaviour/savenongraded
 echo '/question/behaviour/savenongraded' >> .git/info/exclude
 
 #
