@@ -26,7 +26,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-
 /**
  * Renderer for outputting parts of a question belonging to the manual
  * graded behaviour.
@@ -35,4 +34,51 @@ defined('MOODLE_INTERNAL') || die();
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qbehaviour_manualgraded_renderer extends qbehaviour_renderer {
+
+    /**
+     * Generate some HTML (which may be blank) that appears in the question
+     * formulation area, afer the question type generated output.
+     *
+     * For example.
+     * immediatefeedback and interactive mode use this to show the Submit button,
+     * and CBM use this to display the certainty choices.
+     *
+     * @param question_attempt $qa a question attempt.
+     * @param question_display_options $options controls what should and should not be displayed.
+     * @return string HTML fragment.
+     */
+    public function controls(question_attempt $qa, question_display_options $options) {
+
+        // Create a new "save button".
+        return $this->submit_button($qa, $options);
+    }
+
+
+    /**
+     * Creates a "Save Changes" button. This code was copied from the submit_button routine in the
+     * core qbehaviour renderer.
+     *
+     * @param question_display_options $options controls what should and should not be displayed.
+     * @return string HTML fragment.
+     */
+    protected function submit_button(question_attempt $qa, question_display_options $options) {
+
+        // Determine the attributes for the new save button...
+        $attributes = array(
+            'type' => 'submit',
+            'id' => $qa->get_behaviour_field_name('save'),
+            'name' => $qa->get_behaviour_field_name('save'),
+            'value' => get_string('savechanges'), 
+            'class' => 'submit btn',
+        );
+
+        // If the question is read-only, grey out the button.
+        if ($options->readonly) {
+            $attributes['disabled'] = 'disabled';
+        }
+
+        // Create the relevant submit button, and return.
+        return html_writer::empty_tag('input', $attributes);
+    }
+
 }
